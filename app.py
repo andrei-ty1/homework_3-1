@@ -106,6 +106,15 @@ app.layout = html.Div([
         ),
         style={'width': '100px'}
     ),
+    html.H4("Use RTH?"),
+    html.Div(
+        dcc.Dropdown(
+            ["True", "False"],
+            "True",
+            id='use-rth'
+        ),
+        style={'width': '100px'}
+    ),
     html.H4("Enter a currency pair:"),
     html.P(
         children=[
@@ -173,11 +182,12 @@ app.layout = html.Div([
      State('edt-date', 'date'), State('edt-hour', 'value'),
      State('edt-minute', 'value'), State('edt-second', 'value'),
      State('duration-string', 'value'), State('duration-date', 'value'),
-     State('bar-size', 'value')]
+     State('bar-size', 'value'), State('use-rth', 'value')]
 )
 def update_candlestick_graph(n_clicks, currency_string, what_to_show,
                              edt_date, edt_hour, edt_minute, edt_second,
-                             duration_string, duration_date, bar_size):
+                             duration_string, duration_date, bar_size,
+                             use_rth):
     # n_clicks doesn't
     # get used, we only include it for the dependency.
 
@@ -212,7 +222,7 @@ def update_candlestick_graph(n_clicks, currency_string, what_to_show,
         durationStr=duration_string + duration_date,       # <-- make a reactive input
         barSizeSetting=bar_size,  # <-- make a reactive input
         whatToShow=what_to_show,
-        useRTH=True               # <-- make a reactive input
+        useRTH=use_rth               # <-- make a reactive input
     )
     # # Make the candlestick figure
     fig = go.Figure(
