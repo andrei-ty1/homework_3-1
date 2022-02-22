@@ -57,7 +57,10 @@ class ibkr_app(EWrapper, EClient):
         # print(reqId, bar)
 
         series_list = (bar.__str__().split(", "))
-        series_dict = pd.DataFrame({"Date": [":".join(series_list[0].split(":")[1:])],
+        series_dict = pd.DataFrame({"Date": [(series_list[0].split(":")[1].split("  ")[0])[:5]
+                                             + "-" + (series_list[0].split(":")[1].split("  ")[0])[5:7]
+                                             + "-" + (series_list[0].split(":")[1].split("  ")[0])[7:]
+                                             ],
             "Open": [series_list[1].split(":")[1]],
             "High": [series_list[2].split(":")[1]],
             "Low": [series_list[3].split(":")[1]],
