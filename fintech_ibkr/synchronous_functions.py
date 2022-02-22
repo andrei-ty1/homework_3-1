@@ -55,19 +55,21 @@ class ibkr_app(EWrapper, EClient):
         # Take a look at candlestick_plot.ipynb for some help!
         # assign the dataframe to self.historical_data.
         # print(reqId, bar)
+        # "Date": [":".join(series_list[0].split(":")[1:])] for date with time
+        # "Date": [(series_list[0].split(":")[1].split("  ")[0])[:5]
+        #                                              + "-" + (series_list[0].split(":")[1].split("  ")[0])[5:7]
+        #                                              + "-" + (series_list[0].split(":")[1].split("  ")[0])[7:]
+        #                                              ] for date without time and separated by -
 
         series_list = (bar.__str__().split(", "))
-        series_dict = pd.DataFrame({"Date": [(series_list[0].split(":")[1].split("  ")[0])[:5]
-                                             + "-" + (series_list[0].split(":")[1].split("  ")[0])[5:7]
-                                             + "-" + (series_list[0].split(":")[1].split("  ")[0])[7:]
-                                             ],
-            "Open": [series_list[1].split(":")[1]],
-            "High": [series_list[2].split(":")[1]],
-            "Low": [series_list[3].split(":")[1]],
-            "Close": [series_list[4].split(":")[1]],
-            "Volume": [series_list[5].split(":")[1]],
-            "Average": [series_list[6].split(":")[1]],
-            "BarCount": [series_list[7].split(":")[1]]
+        series_dict = pd.DataFrame({"date": [":".join(series_list[0].split(":")[1:])],
+            "open": [series_list[1].split(":")[1]],
+            "high": [series_list[2].split(":")[1]],
+            "low": [series_list[3].split(":")[1]],
+            "close": [series_list[4].split(":")[1]],
+            "volume": [series_list[5].split(":")[1]],
+            "average": [series_list[6].split(":")[1]],
+            "barCount": [series_list[7].split(":")[1]]
              })
         self.historical_data = pd.concat([self.historical_data, series_dict], ignore_index=True)
 
