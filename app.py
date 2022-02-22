@@ -77,7 +77,35 @@ app.layout = html.Div([
             )
         ]
     ),
-
+    html.H4("Enter duration time:"),
+    html.Div([
+        dcc.Input(
+            placeholder='Enter a value...',
+            type='text',
+            value='30',
+            id = "duration-string"
+        )
+    ]),
+    html.Div(
+        dcc.Dropdown(
+            ["S", "D", "W", "M", "Y"],
+            "D",
+            id='duration-date'
+        ),
+        style={'width': '100px'}
+    ),
+    html.H4("Choose Bar Size:"),
+    html.Div(
+        dcc.Dropdown(
+            ["1 secs", "5 secs", "10 secs", "15 secs", "30 secs",
+             "1 min", "2 mins", "3 mins", "5 mins", "10 mins", "15 mins", "20 mins", "30 mins",
+             "1 hour", "2 hours", "3 hours", "4 hours", "8 hours",
+             "1 day", "1 week", "1 month"],
+            "1 hour",
+            id='bar-size'
+        ),
+        style={'width': '100px'}
+    ),
     html.H4("Enter a currency pair:"),
     html.P(
         children=[
@@ -143,10 +171,13 @@ app.layout = html.Div([
     #   of 'currency-input' at the time the button was pressed DOES get passed in.
     [State('currency-input', 'value'), State('what-to-show', 'value'),
      State('edt-date', 'date'), State('edt-hour', 'value'),
-     State('edt-minute', 'value'), State('edt-second', 'value')]
+     State('edt-minute', 'value'), State('edt-second', 'value'),
+     State('duration-string', 'value'), State('duration-date', 'value'),
+     State('bar-size', 'value')]
 )
 def update_candlestick_graph(n_clicks, currency_string, what_to_show,
-                             edt_date, edt_hour, edt_minute, edt_second):
+                             edt_date, edt_hour, edt_minute, edt_second,
+                             duration_string, duration_date, bar_size):
     # n_clicks doesn't
     # get used, we only include it for the dependency.
 
@@ -178,8 +209,8 @@ def update_candlestick_graph(n_clicks, currency_string, what_to_show,
     cph = fetch_historical_data(
         contract=contract,
         endDateTime='',
-        durationStr='30 D',       # <-- make a reactive input
-        barSizeSetting='1 hour',  # <-- make a reactive input
+        durationStr=duration_string + duration_date,       # <-- make a reactive input
+        barSizeSetting=bar_size,  # <-- make a reactive input
         whatToShow=what_to_show,
         useRTH=True               # <-- make a reactive input
     )

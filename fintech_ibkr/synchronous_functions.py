@@ -28,7 +28,7 @@ class ibkr_app(EWrapper, EClient):
         # in the self.error_messages instance variable, so you can use that as
         # a guide.
         self.historical_data = pd.DataFrame(columns=[
-            'Date', 'Open', 'High', 'Low', 'Close', 'Volume', 'Average', 'BarCount'
+            'date', 'open', 'high', 'low', 'close', 'volume', 'average', 'barCount'
         ])
         self.historical_data_end = ''
         self.contract_details = ''
@@ -60,7 +60,6 @@ class ibkr_app(EWrapper, EClient):
         #                                              + "-" + (series_list[0].split(":")[1].split("  ")[0])[5:7]
         #                                              + "-" + (series_list[0].split(":")[1].split("  ")[0])[7:]
         #                                              ] for date without time and separated by -
-
         series_list = (bar.__str__().split(", "))
         series_dict = pd.DataFrame({"date": [":".join(series_list[0].split(":")[1:])],
             "open": [series_list[1].split(":")[1]],
